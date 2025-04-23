@@ -1,13 +1,14 @@
-﻿<h2>Регистрация</h2>
+﻿@model User
+<h2>Регистрация</h2>
 
 <form method="post">
-    <label>Email</label> <br />
-    <input type="text" /> <br />
+    <label asp-for="Name">Email</label> <br />
+    <input type="text" asp-for="Name" /> <br />
     <br />
-    <label>Пароль</label> <br />
-    <input type="password" /> <br />
+    <label asp-for="Password">Пароль</label> <br />
+    <input type="password" asp-for="Password" /> <br />
 
     <input type="submit" value="Отправить"/>
 </form>
 
-<a>Назад</a>
+<a asp-route="Main">Назад</a>
