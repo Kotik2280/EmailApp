@@ -1,0 +1,14 @@
+﻿@model User
+<h2>Авторизация</h2>
+
+<form method="post">
+    <label asp-for="Name">Название Email</label> <br />
+    <input type="text" asp-for="Name"/> <br />
+    <br />
+    <label asp-for="Password">Пароль</label> <br />
+    <input type="password" asp-for="Password"/> <br />
+
+    <input type="submit" value="Отправить" />
+</form>
+
+<a asp-route="Main">Назад</a>

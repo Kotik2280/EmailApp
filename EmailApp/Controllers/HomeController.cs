@@ -1,9 +1,14 @@
-﻿using EmailApp.Models;
+﻿using EmailApp.Attributes;
+using EmailApp.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EmailApp.Controllers
 {
+    [CheckAuthorization]
     public class HomeController : Controller
     {
         DataContext _db;
@@ -11,13 +16,10 @@ namespace EmailApp.Controllers
         {
             _db = db;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
-        }
-        public async Task<IActionResult> UsersList()
-        {
-            return View(await _db.Users.ToListAsync());
         }
         [HttpGet]
         public IActionResult Registration()
@@ -31,9 +33,24 @@ namespace EmailApp.Controllers
             await _db.SaveChangesAsync();
             return RedirectToRoute("Main");
         }
-        public IActionResult Autorization()
+        [HttpGet]
+        public IActionResult Authorization()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Authorization(User user)
+        {
+            if (await _db.Users.FirstOrDefaultAsync(u => u.Name == user.Name && u.Password == user.Password) is null)
+                return RedirectToRoute("Main");
+
+            List<Claim> claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Name) };
+
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            return RedirectToRoute("Profile");
         }
     }
 }

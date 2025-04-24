@@ -1,0 +1,7 @@
+﻿@model User
+
+<h3>@Model.Name @Model.Password</h3>
+
+<form method="post">
+    <input type="submit" asp-controller="Authorized" asp-action="Quit" value="Выйти"/>
+</form>
