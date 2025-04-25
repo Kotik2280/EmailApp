@@ -22,7 +22,7 @@ namespace EmailApp.Controllers
         {
             string userName = HttpContext.User.Identity.Name;
             User user = await _db.Users.FirstOrDefaultAsync(u => u.Name == userName);
-            List<MessageData> messageDataList = _db.Messages.Where(m => m.ReceiverEmail == user.Name)?.ToList();
+            List<MessageData> messageDataList = await _db.Messages.Where(m => m.ReceiverEmail == user.Name)?.ToListAsync();
             MessageData messageData = new MessageData();
 
             return View(new UserMessageData() { User = user, Message = messageData, MessageDataList = messageDataList});
@@ -35,6 +35,7 @@ namespace EmailApp.Controllers
         {
             return PartialView();
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> SendMessage(MessageData messageData)
         {
@@ -46,6 +47,7 @@ namespace EmailApp.Controllers
 
             return RedirectToRoute("Profile");
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Quit()
         {

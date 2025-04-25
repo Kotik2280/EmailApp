@@ -26,6 +26,7 @@ namespace EmailApp.Controllers
         {
             return View();
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Registration(User user)
         {
@@ -38,6 +39,7 @@ namespace EmailApp.Controllers
         {
             return View();
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Authorization(User user)
         {
