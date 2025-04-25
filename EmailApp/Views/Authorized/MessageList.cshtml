@@ -1,0 +1,9 @@
+﻿@model List<MessageData>
+
+<h3>Список сообщений</h3>
+<ul>
+    @foreach(MessageData message in Model)
+    {
+        <li>[@message.Date] @message.SenderEmail: @message.Message</li>
+    }
+</ul>

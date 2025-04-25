@@ -5,6 +5,7 @@ namespace EmailApp.Models
     public class DataContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<MessageData> Messages { get; set; } = null!;
 
         public DataContext(DbContextOptions options) : base(options)
         {

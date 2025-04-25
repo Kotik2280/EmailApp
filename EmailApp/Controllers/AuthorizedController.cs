@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using EmailApp.Models.View;
 
 namespace EmailApp.Controllers
 {
@@ -21,7 +22,29 @@ namespace EmailApp.Controllers
         {
             string userName = HttpContext.User.Identity.Name;
             User user = await _db.Users.FirstOrDefaultAsync(u => u.Name == userName);
-            return View(user);
+            List<MessageData> messageDataList = _db.Messages.Where(m => m.ReceiverEmail == user.Name)?.ToList();
+            MessageData messageData = new MessageData();
+
+            return View(new UserMessageData() { User = user, Message = messageData, MessageDataList = messageDataList});
+        }
+        public async Task<IActionResult> MessageList()
+        {
+            return PartialView();
+        }
+        public IActionResult SendMessage()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(MessageData messageData)
+        {
+            messageData.Date = DateTime.Now;
+            messageData.SenderEmail = HttpContext.User.Identity?.Name;
+
+            await _db.Messages.AddAsync(messageData);
+            await _db.SaveChangesAsync();
+
+            return RedirectToRoute("Profile");
         }
         [HttpPost]
         public async Task<IActionResult> Quit()

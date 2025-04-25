@@ -1,0 +1,12 @@
+﻿@model MessageData
+
+<h3>Отправка сообщения</h3>
+<form method="post" asp-controller="Authorized" asp-action="SendMessage">
+    <label asp-for="ReceiverEmail">Получатель</label><br />
+    <input asp-for="ReceiverEmail" type="text"/> <br /> <br />
+
+    <label asp-for="Message">Сообщение</label><br />
+    <input asp-for="Message" type="text" /> <br />
+
+    <input type="submit" value="Отправить"/>
+</form>

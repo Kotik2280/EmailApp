@@ -1,7 +1,10 @@
-﻿@model User
+﻿@model UserMessageData
 
-<h3>@Model.Name @Model.Password</h3>
+<h3>@Model.User.Name</h3>
 
 <form method="post">
     <input type="submit" asp-controller="Authorized" asp-action="Quit" value="Выйти"/>
 </form>
+
+@await Html.PartialAsync("SendMessage", Model.Message)
+@await Html.PartialAsync("MessageList", Model.MessageDataList)
